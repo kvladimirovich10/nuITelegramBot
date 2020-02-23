@@ -1,1 +1,1 @@
-sh target/bin/nuBotIBot
+worker: sh target/bin/nuBotIBot
