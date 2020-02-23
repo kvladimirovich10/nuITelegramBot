@@ -4,49 +4,32 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Random;
 
 public class Bot extends TelegramLongPollingBot {
-    private static Properties prop;
 
-    private static String fatherChatId;
+    private final static String lebedevPath = "src/main/resources/lebedev.png";
+    private final static String lebedevHairPath = "src/main/resources/lebedev_hair.png";
+    private final static String lebedevGrayPath = "src/main/resources/lebedev_gray.jpeg";
+    private final static String fontPath = "src/main/resources/font.ttf";
 
-    private static String lebedevPath;
-    private static String lebedevHairPath;
-    private static String lebedevGrayPath;
-    private static String fontPath;
-
-    static {
-        prop = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/resources/bot.properties")){
-            prop.load(fis);
-
-            fatherChatId = prop.getProperty("fatherChatId");
-
-            lebedevGrayPath = prop.getProperty("lebedevGrayPath");
-            lebedevHairPath = prop.getProperty("lebedevHairPath");
-            lebedevPath = prop.getProperty("lebedevPath");
-            fontPath = prop.getProperty("fontPath");
-        } catch (IOException e) {
-            System.err.println("No property file");
-        }
-    }
+    private Properties prop;
 
     private static Bot bot;
 
-    private Bot() {
+    private Bot(Properties properties) {
+        this.prop = properties;
     }
 
-    static synchronized Bot getBot() {
+    static synchronized Bot getBot(Properties properties) {
         if (bot == null)
-            bot = new Bot();
+            bot = new Bot(properties);
 
         return bot;
     }
@@ -66,9 +49,13 @@ public class Bot extends TelegramLongPollingBot {
             String processedMessage = message.replaceAll("[^\\p{L}0-9]", " ").toLowerCase();
 
             System.out.println(processedMessage);
+
             String chatId = update.getMessage().getChatId().toString();
 
             try {
+
+                String fatherChatId = prop.getProperty("fatherChatId");
+
                 if (!fatherChatId.equals(chatId)) {
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setChatId(fatherChatId);
@@ -76,10 +63,13 @@ public class Bot extends TelegramLongPollingBot {
                     execute(sendMessage);
                 }
 
-                addTextOnImage(processedMessage);
                 SendPhoto sendPhoto = new SendPhoto();
                 sendPhoto.setChatId(chatId);
-                sendPhoto.setPhoto(new File("memeLebedev.png"));
+
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                ImageIO.write(addTextOnImage(processedMessage), "png", os);
+                InputStream is = new ByteArrayInputStream(os.toByteArray());
+                sendPhoto.setPhoto("meme", is);
                 execute(sendPhoto);
 
             } catch (Exception e) {
@@ -96,7 +86,7 @@ public class Bot extends TelegramLongPollingBot {
         return prop.getProperty("token");
     }
 
-    private static void addTextOnImage(String text) throws Exception {
+    private static BufferedImage addTextOnImage(String text) throws Exception {
 
         BufferedImage preparedImage = getProcessedImage();
 
@@ -104,15 +94,15 @@ public class Bot extends TelegramLongPollingBot {
 
         memeLines.add(new StringBuilder().append("ну ").append(text));
 
-        float fontSize = 150f;
+        float fontSize = 100f;
         if (text.length() > 8)
             memeLines.add(new StringBuilder());
         else if (text.length() > 6)
-            fontSize = 125f;
+            fontSize = 75f;
 
         memeLines.getLast().append(" и ").append(text);
 
-        drawText(preparedImage, fontSize, memeLines);
+        return drawText(preparedImage, fontSize, memeLines);
     }
 
     private static BufferedImage getProcessedImage() throws Exception {
@@ -136,14 +126,14 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
-    private static void drawText(BufferedImage image, float fontSize, LinkedList memeLines) throws Exception {
+    private static BufferedImage drawText(BufferedImage image, float fontSize, LinkedList memeLines) {
 
         Graphics g = image.getGraphics();
         Font font;
 
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
-        } catch (IOException|FontFormatException e) {
+        } catch (IOException | FontFormatException e) {
             font = g.getFont();
         }
 
@@ -154,24 +144,23 @@ public class Bot extends TelegramLongPollingBot {
 
         for (int i = 0; i < memeLines.size(); i++) {
             int x = (image.getWidth() - metrics.stringWidth(memeLines.get(i).toString())) / 2;
-            double y = image.getHeight()
+            int y = (int) (image.getHeight()
                     - 0.1 * image.getHeight() - 0.5 * (memeLines.size() - 1) * metrics.getHeight()
-                    + 0.8 * i * metrics.getHeight();
+                    + 0.8 * i * metrics.getHeight());
 
-            g.drawString(memeLines.get(i).toString(), x, (int) y);
-
+            g.drawString(memeLines.get(i).toString(), x, y);
         }
 
         g.dispose();
 
-        ImageIO.write(image, "png", new File("memeLebedev.png"));
+        return image;
     }
 
     private static Color getRandomColor() {
         Random random = new Random();
         return new Color(random.nextInt(255),
-                         random.nextInt(255),
-                         random.nextInt(255),
-                      115);
+                random.nextInt(255),
+                random.nextInt(255),
+                115);
     }
 }
