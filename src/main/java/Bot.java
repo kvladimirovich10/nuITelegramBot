@@ -21,12 +21,11 @@ public class Bot extends TelegramLongPollingBot {
     private static String lebedevPath;
     private static String lebedevHairPath;
     private static String lebedevGrayPath;
+    private static String fontPath;
 
     static {
-        FileInputStream fis;
         prop = new Properties();
-        try {
-            fis = new FileInputStream("src/main/resources/bot.properties");
+        try (FileInputStream fis = new FileInputStream("src/main/resources/bot.properties")){
             prop.load(fis);
 
             fatherChatId = prop.getProperty("fatherChatId");
@@ -34,6 +33,7 @@ public class Bot extends TelegramLongPollingBot {
             lebedevGrayPath = prop.getProperty("lebedevGrayPath");
             lebedevHairPath = prop.getProperty("lebedevHairPath");
             lebedevPath = prop.getProperty("lebedevPath");
+            fontPath = prop.getProperty("fontPath");
         } catch (IOException e) {
             System.err.println("No property file");
         }
@@ -69,11 +69,6 @@ public class Bot extends TelegramLongPollingBot {
             String chatId = update.getMessage().getChatId().toString();
 
             try {
-                addTextOnImage(processedMessage);
-                SendPhoto sendPhoto = new SendPhoto();
-                sendPhoto.setChatId(chatId);
-                sendPhoto.setPhoto(new File("memeLebedev.png"));
-
                 if (!fatherChatId.equals(chatId)) {
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setChatId(fatherChatId);
@@ -81,6 +76,10 @@ public class Bot extends TelegramLongPollingBot {
                     execute(sendMessage);
                 }
 
+                addTextOnImage(processedMessage);
+                SendPhoto sendPhoto = new SendPhoto();
+                sendPhoto.setChatId(chatId);
+                sendPhoto.setPhoto(new File("memeLebedev.png"));
                 execute(sendPhoto);
 
             } catch (Exception e) {
@@ -99,7 +98,7 @@ public class Bot extends TelegramLongPollingBot {
 
     private static void addTextOnImage(String text) throws Exception {
 
-        BufferedImage preparedImage = imageProcessing();
+        BufferedImage preparedImage = getProcessedImage();
 
         LinkedList<StringBuilder> memeLines = new LinkedList<>();
 
@@ -116,7 +115,7 @@ public class Bot extends TelegramLongPollingBot {
         drawText(preparedImage, fontSize, memeLines);
     }
 
-    private static BufferedImage imageProcessing() throws Exception {
+    private static BufferedImage getProcessedImage() throws Exception {
 
         BufferedImage hairImg = ImageIO.read(new File(lebedevHairPath));
         BufferedImage grayImg = ImageIO.read(new File(lebedevGrayPath));
@@ -143,7 +142,7 @@ public class Bot extends TelegramLongPollingBot {
         Font font;
 
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/18645.ttf"));
+            font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
         } catch (IOException|FontFormatException e) {
             font = g.getFont();
         }
@@ -169,9 +168,10 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private static Color getRandomColor() {
-        return new Color(new Random().nextInt(255),
-                new Random().nextInt(255),
-                new Random().nextInt(255),
-                100);
+        Random random = new Random();
+        return new Color(random.nextInt(255),
+                         random.nextInt(255),
+                         random.nextInt(255),
+                      115);
     }
 }
