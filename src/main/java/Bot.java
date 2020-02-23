@@ -4,7 +4,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -48,7 +47,7 @@ public class Bot extends TelegramLongPollingBot {
 
             String processedMessage = message.replaceAll("[^\\p{L}0-9]", " ").toLowerCase();
 
-            System.out.println(processedMessage);
+            System.out.println("--"+processedMessage);
 
             String chatId = update.getMessage().getChatId().toString();
 
@@ -59,7 +58,7 @@ public class Bot extends TelegramLongPollingBot {
                 if (!fatherChatId.equals(chatId)) {
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setChatId(fatherChatId);
-                    sendMessage.setText(processedMessage);
+                    sendMessage.setText("--" + processedMessage);
                     execute(sendMessage);
                 }
 
@@ -158,9 +157,9 @@ public class Bot extends TelegramLongPollingBot {
 
     private static Color getRandomColor() {
         Random random = new Random();
-        return new Color(random.nextInt(255),
-                random.nextInt(255),
-                random.nextInt(255),
-                115);
+        return new Color(random.nextInt(200),
+                random.nextInt(180),
+                random.nextInt(200),
+                90);
     }
 }
