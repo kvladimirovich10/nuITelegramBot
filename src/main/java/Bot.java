@@ -94,12 +94,15 @@ public class Bot extends TelegramLongPollingBot {
         memeLines.add(new StringBuilder().append("ну ").append(text));
 
         float fontSize = 100f;
-        if (text.length() > 8)
+        String blank = " ";
+        if (text.length() > 8){
             memeLines.add(new StringBuilder());
+            blank = "";
+        }
         else if (text.length() > 6)
             fontSize = 75f;
 
-        memeLines.getLast().append("и ").append(text);
+        memeLines.getLast().append(blank).append("и ").append(text);
 
         return drawText(preparedImage, fontSize, memeLines);
     }
