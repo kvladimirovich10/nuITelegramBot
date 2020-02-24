@@ -27,7 +27,7 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>com.home.server.nuITelegramBot</mainClass>
+                            <mainClass>Main</mainClass>
                             <name>nuBotIBot</name>
                         </program>
                     </programs>
