@@ -68,7 +68,7 @@ public class Bot extends TelegramLongPollingBot {
                 ByteArrayOutputStream os = new ByteArrayOutputStream();
                 ImageIO.write(addTextOnImage(processedMessage), "png", os);
                 InputStream is = new ByteArrayInputStream(os.toByteArray());
-                sendPhoto.setPhoto("meme", is);
+                sendPhoto.setPhoto("lebedevMeme", is);
                 execute(sendPhoto);
 
             } catch (Exception e) {
@@ -99,7 +99,7 @@ public class Bot extends TelegramLongPollingBot {
         else if (text.length() > 6)
             fontSize = 75f;
 
-        memeLines.getLast().append(" и ").append(text);
+        memeLines.getLast().append("и ").append(text);
 
         return drawText(preparedImage, fontSize, memeLines);
     }
