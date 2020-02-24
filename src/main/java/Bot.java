@@ -118,7 +118,7 @@ public class Bot extends TelegramLongPollingBot {
 
         g.drawImage(grayImg, 0, 0, null);
         g.setComposite(AlphaComposite.SrcAtop);
-        g.setColor(getRandomColor());
+        g.setColor(getRandomColor(75,255));
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
 
         g.drawImage(hairImg, 0, 0, null);
@@ -147,7 +147,7 @@ public class Bot extends TelegramLongPollingBot {
         for (int i = 0; i < memeLines.size(); i++) {
             int x = (image.getWidth() - metrics.stringWidth(memeLines.get(i).toString())) / 2;
             int y = (int) (image.getHeight()
-                    - 0.1 * image.getHeight() - 0.5 * (memeLines.size() - 1) * metrics.getHeight()
+                    - 0.08 * image.getHeight() - 0.5 * (memeLines.size() - 1) * metrics.getHeight()
                     + 0.8 * i * metrics.getHeight());
 
             g.drawString(memeLines.get(i).toString(), x, y);
@@ -158,11 +158,11 @@ public class Bot extends TelegramLongPollingBot {
         return image;
     }
 
-    private static Color getRandomColor() {
+    private static Color getRandomColor(int min, int max) {
         Random random = new Random();
-        return new Color(random.nextInt(200),
-                random.nextInt(180),
-                random.nextInt(200),
+        return new Color(random.nextInt((max - min) + 1) + min,
+                random.nextInt((max - min) + 1) + min,
+                random.nextInt((max - min) + 1) + min,
                 90);
     }
 }
