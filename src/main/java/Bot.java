@@ -163,6 +163,6 @@ public class Bot extends TelegramLongPollingBot {
         return new Color(random.nextInt((max - min) + 1) + min,
                 random.nextInt((max - min) + 1) + min,
                 random.nextInt((max - min) + 1) + min,
-                90);
+                100);
     }
 }
