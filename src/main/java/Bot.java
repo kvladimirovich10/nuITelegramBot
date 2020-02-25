@@ -47,6 +47,7 @@ public class Bot extends TelegramLongPollingBot {
 
             String processedMessage = message.replaceAll("[^\\p{L}0-9]", " ").toLowerCase();
 
+            System.out.println(System.getenv("BOT_NAME"));
             System.out.println("-- "+processedMessage);
 
             String chatId = update.getMessage().getChatId().toString();
