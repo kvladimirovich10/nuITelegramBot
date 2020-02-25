@@ -55,16 +55,15 @@ public class Bot extends TelegramLongPollingBot {
 
                 String fatherChatId = prop.getProperty("fatherChatId");
 
-                if (!fatherChatId.equals(chatId)) {
+                //if (!fatherChatId.equals(chatId)) {
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setChatId(fatherChatId);
-                    sendMessage.setText("-- " +
-                            update.getMessage().getContact().getFirstName()
-                            + " "
-                            + update.getMessage().getContact().getFirstName()
+                    sendMessage.setText(
+                            "-- " +
+                            update.getMessage().getContact().toString()
                             + " - " + processedMessage);
                     execute(sendMessage);
-                }
+                //}
 
                 SendPhoto sendPhoto = new SendPhoto();
                 sendPhoto.setChatId(chatId);
