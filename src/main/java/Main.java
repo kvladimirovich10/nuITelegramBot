@@ -8,13 +8,10 @@ import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
-        Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/resources/bot.properties")) {
-            properties.load(fis);
             ApiContextInitializer.init();
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 
-            telegramBotsApi.registerBot(Bot.getBot(properties));
+            telegramBotsApi.registerBot(Bot.getBot());
 
         } catch (IOException e) {
             System.err.println("No property file");

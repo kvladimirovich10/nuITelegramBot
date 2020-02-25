@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.LinkedList;
-import java.util.Properties;
 import java.util.Random;
 
 public class Bot extends TelegramLongPollingBot {
@@ -18,17 +17,13 @@ public class Bot extends TelegramLongPollingBot {
     private final static String lebedevGrayPath = "src/main/resources/lebedev_gray.jpeg";
     private final static String fontPath = "src/main/resources/font.ttf";
 
-    private Properties prop;
-
     private static Bot bot;
 
-    private Bot(Properties properties) {
-        this.prop = properties;
-    }
+    private Bot() {}
 
-    static synchronized Bot getBot(Properties properties) {
+    static synchronized Bot getBot() {
         if (bot == null)
-            bot = new Bot(properties);
+            bot = new Bot();
 
         return bot;
     }
@@ -47,14 +42,13 @@ public class Bot extends TelegramLongPollingBot {
 
             String processedMessage = message.replaceAll("[^\\p{L}0-9]", " ").toLowerCase();
 
-            System.out.println(System.getenv("BOT_NAME"));
             System.out.println("-- "+processedMessage);
 
             String chatId = update.getMessage().getChatId().toString();
 
             try {
 
-                String fatherChatId = prop.getProperty("fatherChatId");
+                String fatherChatId = System.getenv("FATHER_CHAT_ID");
 
                 if (!fatherChatId.equals(chatId)) {
                     SendMessage sendMessage = new SendMessage();
@@ -79,11 +73,11 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     public String getBotUsername() {
-        return prop.getProperty("botName");
+        return System.getenv("BOT_NAME");
     }
 
     public String getBotToken() {
-        return prop.getProperty("token");
+        return System.getenv("TOKEN");
     }
 
     private static BufferedImage addTextOnImage(String text) throws Exception {
