@@ -1,7 +1,6 @@
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.Contact;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import javax.imageio.ImageIO;
@@ -41,7 +40,7 @@ public class Bot extends TelegramLongPollingBot {
 
         if (update.hasMessage() && update.getMessage().hasText()) {
             String message = update.getMessage().getText();
-            Contact contact = update.getMessage().getContact();
+
             if (message.matches(emoRegex)) {
                 message = "эмодзи";
             }
@@ -56,12 +55,12 @@ public class Bot extends TelegramLongPollingBot {
 
                 String fatherChatId = prop.getProperty("fatherChatId");
 
-                //if (!fatherChatId.equals(chatId)) {
+                if (!fatherChatId.equals(chatId)) {
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setChatId(fatherChatId);
-                    sendMessage.setText("-- " + contact.toString() + " - " + processedMessage);
+                    sendMessage.setText("-- " + processedMessage);
                     execute(sendMessage);
-                //}
+                }
 
                 SendPhoto sendPhoto = new SendPhoto();
                 sendPhoto.setChatId(chatId);
