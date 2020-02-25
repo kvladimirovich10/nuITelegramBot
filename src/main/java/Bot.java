@@ -16,7 +16,7 @@ public class Bot extends TelegramLongPollingBot {
     private final static String lebedevPath = "src/main/resources/lebedev.png";
     private final static String lebedevHairPath = "src/main/resources/lebedev_hair.png";
     private final static String lebedevGrayPath = "src/main/resources/lebedev_gray.jpeg";
-    private final static String fontPath = "src/main/resources/18177.ttf";
+    private final static String fontPath = "src/main/resources/font.ttf";
 
     private Properties prop;
 
@@ -163,6 +163,6 @@ public class Bot extends TelegramLongPollingBot {
         return new Color(random.nextInt((max - min) + 1) + min,
                 random.nextInt((max - min) + 1) + min,
                 random.nextInt((max - min) + 1) + min,
-                100);
+                105);
     }
 }
