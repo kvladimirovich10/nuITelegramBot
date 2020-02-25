@@ -19,7 +19,8 @@ public class Bot extends TelegramLongPollingBot {
 
     private static Bot bot;
 
-    private Bot() {}
+    private Bot() {
+    }
 
     static synchronized Bot getBot() {
         if (bot == null)
@@ -42,7 +43,7 @@ public class Bot extends TelegramLongPollingBot {
 
             String processedMessage = message.replaceAll("[^\\p{L}0-9]", " ").toLowerCase();
 
-            System.out.println("-- "+processedMessage);
+            System.out.println("-- " + processedMessage);
 
             String chatId = update.getMessage().getChatId().toString();
 
@@ -90,11 +91,10 @@ public class Bot extends TelegramLongPollingBot {
 
         float fontSize = 110f;
         String blank = " ";
-        if (text.length() > 7){
+        if (text.length() > 7) {
             memeLines.add(new StringBuilder());
             blank = "";
-        }
-        else if (text.length() > 5)
+        } else if (text.length() > 5)
             fontSize = 85f;
 
         memeLines.getLast().append(blank).append("и ").append(text);
@@ -113,7 +113,7 @@ public class Bot extends TelegramLongPollingBot {
 
         g.drawImage(grayImg, 0, 0, null);
         g.setComposite(AlphaComposite.SrcAtop);
-        g.setColor(getRandomColor(0,255));
+        g.setColor(getRandomColor(0, 255));
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
 
         g.drawImage(hairImg, 0, 0, null);
