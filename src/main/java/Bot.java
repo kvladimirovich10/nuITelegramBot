@@ -95,11 +95,11 @@ public class Bot extends TelegramLongPollingBot {
 
         float fontSize = 110f;
         String blank = " ";
-        if (text.length() > 8){
+        if (text.length() > 7){
             memeLines.add(new StringBuilder());
             blank = "";
         }
-        else if (text.length() > 6)
+        else if (text.length() > 5)
             fontSize = 85f;
 
         memeLines.getLast().append(blank).append("и ").append(text);
@@ -148,7 +148,7 @@ public class Bot extends TelegramLongPollingBot {
             int x = (image.getWidth() - metrics.stringWidth(memeLines.get(i).toString())) / 2;
             int y = (int) (image.getHeight()
                     - 0.08 * image.getHeight() - 0.5 * (memeLines.size() - 1) * metrics.getHeight()
-                    + 0.8 * i * metrics.getHeight());
+                    + 0.9 * i * metrics.getHeight());
 
             g.drawString(memeLines.get(i).toString(), x, y);
         }
