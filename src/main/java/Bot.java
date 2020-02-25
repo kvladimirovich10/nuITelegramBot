@@ -58,7 +58,11 @@ public class Bot extends TelegramLongPollingBot {
                 if (!fatherChatId.equals(chatId)) {
                     SendMessage sendMessage = new SendMessage();
                     sendMessage.setChatId(fatherChatId);
-                    sendMessage.setText("-- " + processedMessage);
+                    sendMessage.setText("-- " +
+                            update.getMessage().getContact().getFirstName()
+                            + " "
+                            + update.getMessage().getContact().getFirstName()
+                            + " - " + processedMessage);
                     execute(sendMessage);
                 }
 
