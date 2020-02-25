@@ -118,7 +118,7 @@ public class Bot extends TelegramLongPollingBot {
 
         g.drawImage(grayImg, 0, 0, null);
         g.setComposite(AlphaComposite.SrcAtop);
-        g.setColor(getRandomColor(75,255));
+        g.setColor(getRandomColor(0,255));
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
 
         g.drawImage(hairImg, 0, 0, null);
@@ -163,6 +163,6 @@ public class Bot extends TelegramLongPollingBot {
         return new Color(random.nextInt((max - min) + 1) + min,
                 random.nextInt((max - min) + 1) + min,
                 random.nextInt((max - min) + 1) + min,
-                95);
+                100);
     }
 }
