@@ -16,7 +16,7 @@ public class Bot extends TelegramLongPollingBot {
     private final static String lebedevPath = "src/main/resources/lebedev.png";
     private final static String lebedevHairPath = "src/main/resources/lebedev_hair.png";
     private final static String lebedevGrayPath = "src/main/resources/lebedev_gray.jpeg";
-    private final static String fontPath = "src/main/resources/f.ttf";
+    private final static String fontPath = "src/main/resources/18177.ttf";
 
     private Properties prop;
 
