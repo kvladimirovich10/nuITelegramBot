@@ -60,6 +60,8 @@ public class Bot extends TelegramLongPollingBot {
 
             // It is better to have this photo cached, because it will always be the same photo
             cacheDummyPhoto();
+
+            LOG.info("Successful start");
         } catch (Exception e) {
             LOG.error("Failed to start properly", e);
         }
