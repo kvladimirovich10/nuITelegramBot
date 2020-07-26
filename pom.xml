@@ -27,7 +27,7 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>Main</mainClass>
+                            <mainClass>com.kirillbots.lebedevbot.Main</mainClass>
                             <name>nuBotIBot</name>
                         </program>
                     </programs>
